@@ -1,0 +1,29 @@
+[package]
+name = "discord_paper"
+version = "0.1.0"
+authors = ["CoreyShupe <corey.shupe@superleague.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+paper_api = { git = "https://github.com/CoreyShupe/PaperAPI.rs" }
+serde = { version = "^1.0", features = ["derive"] }
+serde_json = "^1.0"
+tokio = { version = "0.2", features = ["full"] }
+chrono = "0.4.19"
+
+[dependencies.serenity]
+default-features = false
+features = [
+    "builder",
+    "client",
+    "framework",
+    "gateway",
+    "http",
+    "model",
+    "standard_framework",
+    "utils",
+    "rustls_tokio_0_2_backend",
+]
+version = "0.10"
