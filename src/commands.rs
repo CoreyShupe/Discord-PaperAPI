@@ -100,8 +100,16 @@ async fn project(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult 
                         .set_author(def_embed_author(&msg.author))
                         .title(format!("PaperAPI Project {}", project.project_name))
                         .field("Project ID", project.project_id, true)
-                        .field("Project Groups", truncate(&project_groups.join(", "), 1024), false)
-                        .field("Project Versions", truncate(&project_versions.join(", "), 1024), false)
+                        .field(
+                            "Project Groups",
+                            truncate(&project_groups.join(", "), 1024),
+                            false,
+                        )
+                        .field(
+                            "Project Versions",
+                            truncate(&project_versions.join(", "), 1024),
+                            false,
+                        )
                         .timestamp(timestamp())
                 });
 
@@ -151,7 +159,11 @@ async fn project_groups(ctx: &Context, msg: &Message, mut args: Args) -> Command
                             group_info.project_name, group_info.version_group
                         ))
                         .field("Project ID", group_info.project_id, true)
-                        .field("Project Versions", truncate(&project_versions.join(", "), 1024), false)
+                        .field(
+                            "Project Versions",
+                            truncate(&project_versions.join(", "), 1024),
+                            false,
+                        )
                         .timestamp(timestamp())
                 });
 
@@ -159,8 +171,14 @@ async fn project_groups(ctx: &Context, msg: &Message, mut args: Args) -> Command
             })
             .await?;
     } else {
-        msg.reply(ctx, format!("Could not find project {}", &project_name))
-            .await?;
+        msg.reply(
+            ctx,
+            format!(
+                "Could not find project groups (Project: {}, Version Group: {})",
+                &project_name, &version_group
+            ),
+        )
+        .await?;
     }
 
     Ok(())
@@ -207,7 +225,11 @@ async fn project_builds(ctx: &Context, msg: &Message, mut args: Args) -> Command
                             builds_info.project_name, builds_info.version_group
                         ))
                         .field("Project ID", builds_info.project_id, true)
-                        .field("Project Versions", truncate(&project_versions.join(", "), 1024), false)
+                        .field(
+                            "Project Versions",
+                            truncate(&project_versions.join(", "), 1024),
+                            false,
+                        )
                         .field(
                             "Project Version Group Builds",
                             truncate(&group_builds.join(", "), 1024),
@@ -220,8 +242,14 @@ async fn project_builds(ctx: &Context, msg: &Message, mut args: Args) -> Command
             })
             .await?;
     } else {
-        msg.reply(ctx, format!("Could not find project {}", &project_name))
-            .await?;
+        msg.reply(
+            ctx,
+            format!(
+                "Could not find builds (Project: {}, Version Group: {})",
+                &project_name, &version_group
+            ),
+        )
+        .await?;
     }
 
     Ok(())
@@ -252,7 +280,8 @@ async fn project_version(ctx: &Context, msg: &Message, mut args: Args) -> Comman
     };
 
     if let Ok(version_info) = PaperClient::get_version_info(&project_name, &version).await {
-        let mut version_builds: Vec<String> = version_info.builds
+        let mut version_builds: Vec<String> = version_info
+            .builds
             .iter()
             .map(|info| format!("{}", info))
             .collect::<Vec<String>>();
@@ -285,8 +314,14 @@ async fn project_version(ctx: &Context, msg: &Message, mut args: Args) -> Comman
             })
             .await?;
     } else {
-        msg.reply(ctx, format!("Could not find project {}", &project_name))
-            .await?;
+        msg.reply(
+            ctx,
+            format!(
+                "Could not find project version (Project: {}, Version: {})",
+                &project_name, &version
+            ),
+        )
+        .await?;
     }
 
     Ok(())
@@ -368,8 +403,14 @@ async fn project_build(ctx: &Context, msg: &Message, mut args: Args) -> CommandR
             })
             .await?;
     } else {
-        msg.reply(ctx, format!("Could not find project {}", &project_name))
-            .await?;
+        msg.reply(
+            ctx,
+            format!(
+                "Could not find project version build (Project: {}, Version: {}, Build: {})",
+                &project_name, &version, &build
+            ),
+        )
+        .await?;
     }
 
     Ok(())
